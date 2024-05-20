@@ -24,22 +24,16 @@ final readonly class IndexHandler
     ) {
     }
 
-    public function handle(): LengthAwarePaginator|array
+    public function handle(): LengthAwarePaginator
     {
-        try {
-            $posts = Post::with('author')
-                         ->paginate(
-                             pageName: 'cursor',
-                         );
+        $posts = Post::with('author')
+                     ->paginate(
+                         pageName: 'cursor',
+                     );
 
-            $posts->setCollection(collect($this->modifyData($posts->items())));
+        $posts->setCollection(collect($this->modifyData($posts->items())));
 
-            return $posts;
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-        }
-
-        return [];
+        return $posts;
     }
 
     private function modifyData(array $items): array
@@ -53,7 +47,9 @@ final readonly class IndexHandler
                 $service = $this->dummyJsonGetHandler->handle($dummyPostId);
                 $item->setAttribute('dummy_json', ManageRequestVO::fromArray($service));
             } catch (Exception $e) {
-                Log::error($e->getMessage());
+                Log::error('Failed to get dummy json data from service in modifyData', [
+                    'exception' => $e->getMessage(),
+                ]);
 
                 continue;
             }

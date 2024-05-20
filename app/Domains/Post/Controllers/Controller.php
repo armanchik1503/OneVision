@@ -24,7 +24,9 @@ use Illuminate\Http\RedirectResponse;
 class Controller extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * @param \App\Domains\Post\Core\Handlers\IndexHandler $handler
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
      */
     public function index(IndexHandler $handler): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -34,7 +36,7 @@ class Controller extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
      */
     public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -42,7 +44,10 @@ class Controller extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param \App\Domains\Post\Requests\Post\StoreRequest  $request
+     * @param \App\Domains\Post\Core\Handlers\CreateHandler $handler
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request, CreateHandler $handler): RedirectResponse
     {
@@ -53,7 +58,10 @@ class Controller extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * @param \App\Domains\Post\Models\Post                         $post
+     * @param \App\Domains\Post\Core\Handlers\DummyJson\ShowHandler $handler
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
      */
     public function show(Post $post, ShowHandler $handler): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -63,7 +71,9 @@ class Controller extends BaseController
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param \App\Domains\Post\Models\Post $post
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
      */
     public function edit(Post $post): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -71,7 +81,12 @@ class Controller extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param \App\Domains\Post\Requests\Post\UpdateRequest $request
+     * @param \App\Domains\Post\Models\Post                 $post
+     * @param \App\Domains\Post\Core\Handlers\UpdateHandler $handler
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function update(UpdateRequest $request, Post $post, UpdateHandler $handler): RedirectResponse
     {
@@ -82,7 +97,10 @@ class Controller extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param \App\Domains\Post\Models\Post                 $post
+     * @param \App\Domains\Post\Core\Handlers\DeleteHandler $handler
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Post $post, DeleteHandler $handler): RedirectResponse
     {

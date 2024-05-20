@@ -32,11 +32,14 @@ final readonly class UpdateHandler
     public function handle(UpdateRequestDTO $dto, Post $post): ?Post
     {
         try {
-           $this->dummyJsonUpdateHandler->handle($dto, $post->dummy_post_id);
+            $this->dummyJsonUpdateHandler->handle($dto, $post->dummy_post_id);
 
-           return $post;
+            return $post;
         } catch (Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Failed to update dummy json data', [
+                'exception' => $e->getMessage(),
+                'post_id'   => $post->id,
+            ]);
         }
 
         return null;

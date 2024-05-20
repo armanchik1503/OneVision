@@ -15,21 +15,41 @@ use App\Core\Services\Microservices\DTO\DummyJson\UpdateDTO;
  */
 class MockService implements DummyJsonApiContract
 {
+    /**
+     * @param \App\Core\Services\Microservices\DTO\DummyJson\GetDTO $dto
+     *
+     * @return array
+     */
     public function get(GetDTO $dto): array
     {
         return [];
     }
 
+    /**
+     * @param \App\Core\Services\Microservices\DTO\DummyJson\CreateDTO $dto
+     *
+     * @return array
+     */
     public function create(CreateDTO $dto): array
     {
         return [];
     }
 
+    /**
+     * @param \App\Core\Services\Microservices\DTO\DummyJson\UpdateDTO $dto
+     *
+     * @return array
+     */
     public function update(UpdateDTO $dto): array
     {
         return [];
     }
 
+    /**
+     * @param \App\Core\Services\Microservices\DTO\DummyJson\DeleteDTO $dto
+     *
+     * @return array
+     */
     public function delete(DeleteDTO $dto): array
     {
         return [];

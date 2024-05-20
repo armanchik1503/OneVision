@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core\Services\Microservices;
 
-use http\Env;
 use Illuminate\Http\Client\PendingRequest;
 
 /**

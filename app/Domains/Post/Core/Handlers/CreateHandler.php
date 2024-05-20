@@ -11,7 +11,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Nette\Utils\Random;
 
 /**
  * Class CreateHandler
@@ -26,6 +25,11 @@ final readonly class CreateHandler
     ) {
     }
 
+    /**
+     * @param \App\Domains\Post\Core\DTO\FormRequest\Post\CreateRequestDTO $dto
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function handle(CreateRequestDTO $dto): Model|null
     {
         try {
@@ -42,7 +46,10 @@ final readonly class CreateHandler
                            );
             }
         } catch (Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Failed to create dummy json data', [
+                'exception' => $e->getMessage(),
+                'payload'   => $dto,
+            ]);
         }
 
         return null;

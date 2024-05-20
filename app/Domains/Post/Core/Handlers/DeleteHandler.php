@@ -21,6 +21,7 @@ readonly class DeleteHandler
         private DummyJsonDeleteHandler $dummyJsonDeleteHandler
     ) {
     }
+
     /**
      * @param \App\Domains\Post\Models\Post $post
      *
@@ -33,7 +34,10 @@ readonly class DeleteHandler
 
             return $post->delete();
         } catch (Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Failed to get dummy json data', [
+                'exception' => $e->getMessage(),
+                'post_id'   => $post->id,
+            ]);
         }
 
         return false;

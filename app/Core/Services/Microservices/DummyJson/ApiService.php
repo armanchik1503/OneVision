@@ -73,8 +73,8 @@ final class ApiService extends BaseApiService implements DummyJsonApiContract
     public function update(UpdateDTO $dto): array
     {
         $payload = [
-            'title'  => $dto->title,
-            'body'   => $dto->body,
+            'title' => $dto->title,
+            'body'  => $dto->body,
         ];
 
         try {
@@ -82,7 +82,7 @@ final class ApiService extends BaseApiService implements DummyJsonApiContract
 
             return json_decode($response->body(), true);
         } catch (Throwable $exception) {
-            Log::error('Failed to create dummy json data', [
+            Log::error('Failed to update dummy json data', [
                 'exception' => $exception->getMessage(),
                 'post_id'   => $dto->postId,
             ]);
@@ -101,13 +101,9 @@ final class ApiService extends BaseApiService implements DummyJsonApiContract
         try {
             $response = $this->client->delete($this->getUrl((string)$dto->postId));
 
-            return data_get(
-                json_decode($response->body(), true),
-                'data',
-                []
-            );
+            return json_decode($response->body(), true);
         } catch (Throwable $exception) {
-            Log::error('Failed to create dummy json data', [
+            Log::error('Failed to delete dummy json data', [
                 'exception' => $exception->getMessage(),
                 'post_id'   => $dto->postId,
             ]);

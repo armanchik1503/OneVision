@@ -28,11 +28,15 @@ final readonly class ShowHandler
     {
         try {
             $service = $this->dummyJsonGetHandler->handle($post->dummy_post_id);
+
             $post->setAttribute('dummy_json', ManageRequestVO::fromArray($service));
 
             return $post;
         } catch (Exception $e) {
-            Log::error($e->getMessage());
+            Log::error('Failed to get dummy json data', [
+                'exception' => $e->getMessage(),
+                'post_id'   => $post->id
+            ]);
         }
 
         return null;

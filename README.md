@@ -19,10 +19,6 @@
     ```shell
     vendor/bin/sail up -d
     ```
-- Для сбора пакетов проекта:
-    ```shell
-    vendor/bin/sail composer install
-    ```
   
 - Для сбора npm пакетов
     ```shell

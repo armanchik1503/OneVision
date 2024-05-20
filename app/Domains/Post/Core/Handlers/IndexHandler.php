@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
+use App\Core\Traits\HasPagination;
 use App\Domains\Post\Core\Handlers\DummyJson\GetHandler;
 use App\Domains\Post\Core\ValueObjects\Services\DummyJson\ManageRequestVO;
 use App\Domains\Post\Models\Post;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Log;
  */
 final readonly class IndexHandler
 {
+    use HasPagination;
+
     /**
      * @param \App\Domains\Post\Core\Handlers\DummyJson\GetHandler $dummyJsonGetHandler
      */
@@ -28,7 +31,8 @@ final readonly class IndexHandler
     {
         $posts = Post::with('author')
                      ->paginate(
-                         pageName: 'cursor',
+                         perPage: self::getDefaultPerPage(),
+                         page:    self::getDefaultPage(),
                      );
 
         $posts->setCollection(collect($this->modifyData($posts->items())));

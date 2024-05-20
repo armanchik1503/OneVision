@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
-use App\Core\Services\Microservices\DTO\DummyJson\CreateDTO;
-use App\Core\Contracts\Services\Microservices\DummyJson\ApiService as DummyJsonApiService;
 use App\Domains\Post\Core\DTO\FormRequest\Post\CreateRequestDTO;
+use App\Domains\Post\Core\Handlers\DummyJson\CreateHandler as DummyJsonCreateHandler;
 use App\Domains\Post\Models\Post;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -19,10 +18,10 @@ use Illuminate\Support\Facades\Log;
 final readonly class CreateHandler
 {
     /**
-     * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService
+     * @param \App\Domains\Post\Core\Handlers\DummyJson\CreateHandler $dummyJsonCreateHandler
      */
     public function __construct(
-        private DummyJsonApiService $dummyJsonService
+        private DummyJsonCreateHandler $dummyJsonCreateHandler
     ) {
     }
 
@@ -30,10 +29,7 @@ final readonly class CreateHandler
     {
         try {
             $userId  = Auth::user()->id;
-            $service = $this->dummyJsonService
-                ->create(
-                    new CreateDTO($dto->title, $dto->body, $userId)
-                );
+            $service = $this->dummyJsonCreateHandler->handle($dto, $userId);
 
             if (filled($service)) {
                 return Post::query()

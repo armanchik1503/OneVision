@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
+use App\Domains\Post\Core\Collections\Services\DummyJson\ManageCollection as DummyJsonCollection;
 use App\Domains\Post\Core\Handlers\DummyJson\GetHandler;
+use App\Domains\Post\Core\ValueObjects\Services\DummyJson\ManageRequestVO;
 use App\Domains\Post\Models\Post;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class IndexHandler
@@ -29,11 +32,10 @@ final readonly class IndexHandler
                              pageName: 'cursor',
                          );
 
-            dd($this->modifyData($posts->items()));
+            $this->modifyData($posts->items());
 
-//        $this->dummyJsonService->get(new GetDTO())
-        } catch (Exception $exception) {
-
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
         }
 
         return [];
@@ -41,11 +43,23 @@ final readonly class IndexHandler
 
     private function modifyData(array $items): array
     {
-        return array_map(function ($item) {
+        $modifiedItems = [];
+
+        foreach ($items as $item) {
             $dummyPostId = $item->dummy_post_id;
 
-            $data = $this->dummyJsonGetHandler->handle($dummyPostId);
-            dd($data);
-        }, $items);
+            try {
+                $data               = $this->dummyJsonGetHandler->handle($dummyPostId);
+                $item['dummy_json'] = ManageRequestVO::fromArray($data);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+
+                continue;
+            }
+
+            $modifiedItems[] = $item;
+        }
+
+        return $modifiedItems;
     }
 }

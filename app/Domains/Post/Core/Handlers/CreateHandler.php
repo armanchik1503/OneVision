@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Nette\Utils\Random;
 
 /**
  * Class CreateHandler
@@ -33,13 +34,10 @@ final readonly class CreateHandler
 
             if (filled($service)) {
                 return Post::query()
-                           ->updateOrCreate(
+                           ->create(
                                [
-                                   'dummy_post_id' => data_get($service, 'id')
-                               ],
-                               [
-                                   'user_id' => $userId,
-                                   'dummy_post_id' => data_get($service,'id')
+                                   'user_id'       => $userId,
+                                   'dummy_post_id' => rand(1, 150),
                                ]
                            );
             }

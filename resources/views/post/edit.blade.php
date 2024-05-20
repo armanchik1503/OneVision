@@ -1,7 +1,7 @@
 <x-app-layout>
 	<div class="post-container single-post">
 		<h1>Edit post</h1>
-		<form action="{{ route('post.update', $post->id) }}" method="POST" class="post">
+		<form action="{{ route('post.update', ['post' => $post->id]) }}" method="POST" class="post">
 			@csrf
 			@method('PUT')
 			<textarea name="title" rows="10" class="post-title" placeholder="Enter post title">

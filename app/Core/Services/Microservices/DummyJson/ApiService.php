@@ -35,7 +35,7 @@ final class ApiService extends BaseApiService implements DummyJsonApiContract
     public function get(GetDTO $dto): array
     {
         try {
-            $response = $this->client->get($this->getUrl(sprintf('/%s', 1)));
+            $response = $this->client->get($this->getUrl(sprintf('/%s', $dto->postId)));
 
             return json_decode($response->body(), true);
         } catch (Throwable $exception) {
@@ -78,13 +78,9 @@ final class ApiService extends BaseApiService implements DummyJsonApiContract
         ];
 
         try {
-            $response = $this->client->put($this->getUrl((string)$dto->postId), $payload);
+            $response = $this->client->put($this->getUrl(sprintf('/%s', $dto->postId)), $payload);
 
-            return data_get(
-                json_decode($response->body(), true),
-                'data',
-                []
-            );
+            return json_decode($response->body(), true);
         } catch (Throwable $exception) {
             Log::error('Failed to create dummy json data', [
                 'exception' => $exception->getMessage(),

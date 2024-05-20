@@ -9,7 +9,10 @@
 		</div>
 		<div class="post">
 			<div class="post-body">
-				{{ $post->user_id }}
+				<p><span class="bold">Name:</span> {{ $post->author->name }}</p>
+				<p><span class="bold">Id:</span> {{ $post->id }}</p>
+				<p class="post-body__title">{{ $post->dummy_json->title }}</p>
+				<p class="post-body__content">{{ $post->dummy_json->body }}</p>
 			</div>
 		</div>
 	</div>

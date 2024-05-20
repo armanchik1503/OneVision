@@ -6,6 +6,7 @@ namespace App\Domains\Post\Controllers;
 
 use App\Domains\Post\Core\Handlers\CreateHandler;
 use App\Domains\Post\Core\Handlers\DeleteHandler;
+use App\Domains\Post\Core\Handlers\DummyJson\ShowHandler;
 use App\Domains\Post\Core\Handlers\IndexHandler;
 use App\Domains\Post\Core\Handlers\UpdateHandler;
 use App\Domains\Post\Models\Post;
@@ -54,8 +55,10 @@ class Controller extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Post $post): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function show(Post $post, ShowHandler $handler): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $post = $handler->handle($post);
+
         return view('post.show', ['post' => $post]);
     }
 
@@ -74,15 +77,18 @@ class Controller extends BaseController
     {
         $post = $handler->handle($request->getDto(), $post);
 
-        return to_route('post.show', $post)
+        return to_route('post.show', ['post' => $post->id])
             ->with('message', 'Post updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post, DeleteHandler $handler): bool
+    public function destroy(Post $post, DeleteHandler $handler): RedirectResponse
     {
-        return $handler->handle($post);
+        $handler->handle($post);
+
+        return to_route('post.index')
+            ->with('message', 'Post Deleted successfully');
     }
 }

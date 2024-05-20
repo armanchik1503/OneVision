@@ -23,14 +23,22 @@ final readonly class UpdateHandler
     ) {
     }
 
-    public function handle(UpdateRequestDTO $dto, Post $post): ?array
+    /**
+     * @param \App\Domains\Post\Core\DTO\FormRequest\Post\UpdateRequestDTO $dto
+     * @param \App\Domains\Post\Models\Post                                $post
+     *
+     * @return \App\Domains\Post\Models\Post|null
+     */
+    public function handle(UpdateRequestDTO $dto, Post $post): ?Post
     {
         try {
-           return $this->dummyJsonUpdateHandler->handle($dto, $post->id);
+           $this->dummyJsonUpdateHandler->handle($dto, $post->dummy_post_id);
+
+           return $post;
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
 
-        return [];
+        return null;
     }
 }

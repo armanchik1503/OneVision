@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Class DeleteHandler
  */
-readonly class DeleteHandler
+final readonly class DeleteHandler
 {
     /**
      * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService

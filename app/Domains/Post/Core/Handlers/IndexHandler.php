@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
+use App\Core\Contracts\Services\Microservices\DummyJson\ApiService as DummyJsonApiService;
+use App\Core\Services\Microservices\DTO\DummyJson\GetDTO;
 use App\Core\Traits\HasPagination;
-use App\Domains\Post\Core\Handlers\DummyJson\GetHandler;
 use App\Domains\Post\Core\ValueObjects\Services\DummyJson\ManageRequestVO;
 use App\Domains\Post\Models\Post;
 use Exception;
@@ -20,10 +21,10 @@ final readonly class IndexHandler
     use HasPagination;
 
     /**
-     * @param \App\Domains\Post\Core\Handlers\DummyJson\GetHandler $dummyJsonGetHandler
+     * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService
      */
     public function __construct(
-        private GetHandler $dummyJsonGetHandler
+        private DummyJsonApiService $dummyJsonService
     ) {
     }
 
@@ -48,7 +49,8 @@ final readonly class IndexHandler
             $dummyPostId = $item->dummy_post_id;
 
             try {
-                $service = $this->dummyJsonGetHandler->handle($dummyPostId);
+                $service = $this->dummyJsonService->get(new GetDTO($dummyPostId));
+
                 $item->setAttribute('dummy_json', ManageRequestVO::fromArray($service));
             } catch (Exception $e) {
                 Log::error('Failed to get dummy json data from service in modifyData', [

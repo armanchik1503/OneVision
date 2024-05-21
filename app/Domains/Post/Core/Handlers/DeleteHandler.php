@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
-use App\Domains\Post\Core\Handlers\DummyJson\DeleteHandler as DummyJsonDeleteHandler;
+use App\Core\Contracts\Services\Microservices\DummyJson\ApiService as DummyJsonApiService;
+use App\Core\Services\Microservices\DTO\DummyJson\DeleteDTO;
 use App\Domains\Post\Models\Post;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -15,10 +16,10 @@ use Illuminate\Support\Facades\Log;
 readonly class DeleteHandler
 {
     /**
-     * @param \App\Domains\Post\Core\Handlers\DummyJson\DeleteHandler $dummyJsonDeleteHandler
+     * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService
      */
     public function __construct(
-        private DummyJsonDeleteHandler $dummyJsonDeleteHandler
+        private DummyJsonApiService $dummyJsonService
     ) {
     }
 
@@ -30,7 +31,7 @@ readonly class DeleteHandler
     public function handle(Post $post): bool
     {
         try {
-            $this->dummyJsonDeleteHandler->handle($post->id);
+            $this->dummyJsonService->delete(new DeleteDTO($post->id));
 
             return $post->delete();
         } catch (Exception $e) {

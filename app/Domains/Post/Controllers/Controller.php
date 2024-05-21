@@ -6,8 +6,8 @@ namespace App\Domains\Post\Controllers;
 
 use App\Domains\Post\Core\Handlers\CreateHandler;
 use App\Domains\Post\Core\Handlers\DeleteHandler;
-use App\Domains\Post\Core\Handlers\DummyJson\ShowHandler;
 use App\Domains\Post\Core\Handlers\IndexHandler;
+use App\Domains\Post\Core\Handlers\ShowHandler;
 use App\Domains\Post\Core\Handlers\UpdateHandler;
 use App\Domains\Post\Models\Post;
 use App\Domains\Post\Requests\Post\StoreRequest;
@@ -58,8 +58,8 @@ class Controller extends BaseController
     }
 
     /**
-     * @param \App\Domains\Post\Models\Post                         $post
-     * @param \App\Domains\Post\Core\Handlers\DummyJson\ShowHandler $handler
+     * @param \App\Domains\Post\Models\Post               $post
+     * @param \App\Domains\Post\Core\Handlers\ShowHandler $handler
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
      */

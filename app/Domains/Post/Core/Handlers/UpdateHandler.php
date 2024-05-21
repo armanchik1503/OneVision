@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Post\Core\Handlers;
 
+use App\Core\Contracts\Services\Microservices\DummyJson\ApiService as DummyJsonApiService;
+use App\Core\Services\Microservices\DTO\DummyJson\UpdateDTO;
 use App\Domains\Post\Core\DTO\FormRequest\Post\UpdateRequestDTO;
-use App\Domains\Post\Core\Handlers\DummyJson\UpdateHandler as DummyJsonUpdateHandler;
 use App\Domains\Post\Models\Post;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -16,10 +17,10 @@ use Illuminate\Support\Facades\Log;
 final readonly class UpdateHandler
 {
     /**
-     * @param \App\Domains\Post\Core\Handlers\DummyJson\UpdateHandler $dummyJsonUpdateHandler
+     * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService
      */
     public function __construct(
-        private DummyJsonUpdateHandler $dummyJsonUpdateHandler
+        private DummyJsonApiService $dummyJsonService
     ) {
     }
 
@@ -32,7 +33,7 @@ final readonly class UpdateHandler
     public function handle(UpdateRequestDTO $dto, Post $post): ?Post
     {
         try {
-            $this->dummyJsonUpdateHandler->handle($dto, $post->dummy_post_id);
+            $this->dummyJsonService->update(new UpdateDTO($dto->title, $dto->body, $post->dummy_post_id));
 
             return $post;
         } catch (Exception $e) {

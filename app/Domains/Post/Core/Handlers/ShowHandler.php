@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Post\Core\Handlers\DummyJson;
+namespace App\Domains\Post\Core\Handlers;
 
-use App\Domains\Post\Core\Handlers\DummyJson\GetHandler as DummyJsonGetHandler;
+use App\Core\Contracts\Services\Microservices\DummyJson\ApiService as DummyJsonApiService;
+use App\Core\Services\Microservices\DTO\DummyJson\GetDTO;
 use App\Domains\Post\Core\ValueObjects\Services\DummyJson\ManageRequestVO;
 use App\Domains\Post\Models\Post;
 use Exception;
@@ -17,17 +18,17 @@ use Illuminate\Support\Facades\Log;
 final readonly class ShowHandler
 {
     /**
-     * @param \App\Domains\Post\Core\Handlers\DummyJson\GetHandler $dummyJsonGetHandler
+     * @param \App\Core\Contracts\Services\Microservices\DummyJson\ApiService $dummyJsonService
      */
     public function __construct(
-        private DummyJsonGetHandler $dummyJsonGetHandler
+        private DummyJsonApiService $dummyJsonService
     ) {
     }
 
     public function handle(Post $post): Model|null
     {
         try {
-            $service = $this->dummyJsonGetHandler->handle($post->dummy_post_id);
+            $service = $this->dummyJsonService->get(new GetDTO($post->dummy_post_id));
 
             $post->setAttribute('dummy_json', ManageRequestVO::fromArray($service));
 
